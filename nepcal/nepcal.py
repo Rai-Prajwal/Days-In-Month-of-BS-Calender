@@ -8,7 +8,7 @@ from selenium.webdriver.firefox.options import Options
 import os
 import time
 
-# Specify the path to geckodriver
+# Specify the path to geckodriver or other webdriver geckodriver is used here since it is for firefox browser
 service = Service('D:/geckodriver.exe')  # Adjust this path as necessary
 
 # Set up Firefox options for headless mode and to block images and CSS
@@ -20,6 +20,7 @@ options.set_preference("permissions.default.stylesheet", 2)  # Block CSS
 # Create the Firefox WebDriver with the specified options
 driver = webdriver.Firefox(service=service, options=options)
 
+#Adjust path as necessary
 DAYS_IN_MONTHS_FILE = "C:/Users/raipr/Desktop/daysinmonth.txt"
 BS_TO_AD_FILE = "C:/Users/raipr/Desktop/bstoad.txt"
 PROGRESS_FILE = "C:/Users/raipr/Desktop/progress.txt"
@@ -131,7 +132,7 @@ def get_highest_days_in_months_and_bs_to_ad_reference(year):
 
 def main():
     # Load last completed year from progress file
-    start_year = load_progress() or 1975  # Start from 1976 if no progress found
+    start_year = load_progress() or 1975  # Start from 1975 if no progress found
 
     for year in range(start_year, 2101):  # Adjust range as needed
         highest_days, bs_to_ad_date = get_highest_days_in_months_and_bs_to_ad_reference(year)
