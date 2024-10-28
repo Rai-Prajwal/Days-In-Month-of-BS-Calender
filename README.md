@@ -16,11 +16,11 @@ To access the data:
 # Snapshot from daysinmonth.txt file
 
 daysInMonths.put(1975, new byte[]{31,31,32,32,31,30,30,29,30,29,30,30});
-daysInMonths.put(1976, new byte[]{31,32,31,32,31,31,30,30,30,29,30,31});
-daysInMonths.put(1977, new byte[]{31,32,32,32,32,31,30,30,30,30,30,31});
-daysInMonths.put(1978, new byte[]{31,31,32,32,31,31,31,30,30,30,30,30});
-daysInMonths.put(1979, new byte[]{31,31,32,32,32,30,30,30,30,29,30,30});
-daysInMonths.put(1980, new byte[]{31,32,32,32,32,31,30,30,29,29,30,31});
+daysInMonths.put(1976, new byte[]{31,32,31,32,31,30,30,30,29,29,30,31});
+daysInMonths.put(1977, new byte[]{30,32,31,32,31,30,30,30,29,30,29,31});
+daysInMonths.put(1978, new byte[]{31,31,32,31,31,31,30,29,30,29,30,30});
+daysInMonths.put(1979, new byte[]{31,31,32,32,31,30,30,29,30,29,30,30});
+daysInMonths.put(1980, new byte[]{31,32,31,32,31,30,30,30,29,29,30,31});
 
 # Snapshot from bstoad.txt file
 
