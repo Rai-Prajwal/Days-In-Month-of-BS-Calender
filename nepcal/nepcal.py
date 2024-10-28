@@ -1,15 +1,11 @@
-from bs4 import BeautifulSoup
 from selenium import webdriver
-from selenium.webdriver.firefox.service import Service
+from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.firefox.options import Options
+from bs4 import BeautifulSoup
 import os
 import time
-
-# Specify the path to geckodriver or other webdriver geckodriver is used here since it is for firefox browser
-service = Service('D:/geckodriver.exe')  # Adjust this path as necessary
 
 # Set up Firefox options for headless mode and to block images and CSS
 options = Options()
@@ -18,9 +14,8 @@ options.set_preference("permissions.default.image", 2)       # Block images
 options.set_preference("permissions.default.stylesheet", 2)  # Block CSS
 
 # Create the Firefox WebDriver with the specified options
-driver = webdriver.Firefox(service=service, options=options)
+driver = webdriver.Firefox(options=options)
 
-#Adjust path as necessary
 DAYS_IN_MONTHS_FILE = "C:/Users/raipr/Desktop/daysinmonth.txt"
 BS_TO_AD_FILE = "C:/Users/raipr/Desktop/bstoad.txt"
 PROGRESS_FILE = "C:/Users/raipr/Desktop/progress.txt"
@@ -65,7 +60,7 @@ def load_progress():
     return None
 
 def remove_unwanted_elements(soup):
-    """Remove all elements except essential content, images, and CSS."""
+    """Remove all elements except essential content."""
     for element in soup(["script", "style", "footer", "header", "aside", "nav"]):
         element.decompose()  # Remove the tag and its contents
     return soup
@@ -97,24 +92,14 @@ def get_highest_days_in_months_and_bs_to_ad_reference(year):
                         adday, adyear = int(ad_date_text.split()[0]), int(ad_date_text.split()[-1])
                         bs_to_ad_date = f"LocalDate.of({adyear}, 4, {adday})"
 
-                # Find the right_big div for days in the month
-                right_big = soup.find('div', id='right_big')
-                if not right_big:
-                    print(f"right_big div not found for year {year}, month {month}")
-                    highest_days_in_months.append(None)
-                else:
-                    # Find the highest day in the month
-                    day_rows = right_big.find_all('div', class_='day_row_b')
-                    highest_value = 0
-                    for row in day_rows:
-                        day_containers = row.find_all('div', class_='day_container_b')
-                        for container in day_containers:
-                            day_val = container.find('div', class_='dayvaln_b')
-                            if day_val:
-                                day_value = int(day_val.get_text(strip=True))
-                                if day_value > highest_value:
-                                    highest_value = day_value
-                    highest_days_in_months.append(highest_value)
+                # Check for the highest day by looking for div IDs from 32 down to 29
+                highest_value = None
+                for day in range(32, 28, -1):  # Check from 32 down to 29
+                    day_div = soup.find('div', id=f"{year}-{month}-{day}")
+                    if day_div:
+                        highest_value = day
+                        break
+                highest_days_in_months.append(highest_value)
 
                 break  # Exit the retry loop if successful
 
